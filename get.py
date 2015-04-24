@@ -10,6 +10,8 @@
 
 # <tr id="yui_3_9_1_9_1428976539885_38"><td class="yfnc_tabledata1" nowrap="" align="right">Apr 13, 2015</td><td class="yfnc_tabledata1" align="right">20.22</td><td class="yfnc_tabledata1" align="right">21.25</td><td class="yfnc_tabledata1" align="right">20.22</td><td class="yfnc_tabledata1" align="right">20.49</td><td class="yfnc_tabledata1" align="right">14,455,400</td><td class="yfnc_tabledata1" align="right">20.49</td></tr>
 
+# sina real time price http://hq.sinajs.cn/list=sh601006
+
 import urllib2
 import lxml
 import lxml.html
@@ -51,6 +53,9 @@ def init_db():
 
 data_list = []
 def insert_one_data(code, data):
+
+    data[0].text = datetime.datetime.strptime(data[0].text, "%b %d, %Y").strftime("%Y%m%d")
+
     c = db.cursor()
     tmp_cmd =    "\", \" ".join(
             [
@@ -104,18 +109,18 @@ def get_stock_info(url, code, arg = ""):
     for d in data:
         if len(d) != 7:
             continue
-        single_info = {}
+        #single_info = {}
         
         #single_info['date'] = datetime.datetime.strptime(
         #        d[0].text,
         #        "%b %d, %Y")
-        single_info['date'] = d[0].text
-        single_info['open'] = d[1].text
-        single_info['high'] = d[2].text
-        single_info['low'] = d[3].text
-        single_info['close'] = d[4].text
-        single_info['vol'] = d[5].text
-        single_info['adj_close'] = d[6].text
+        # single_info['date'] = d[0].text
+        # single_info['open'] = d[1].text
+        # single_info['high'] = d[2].text
+        # single_info['low'] = d[3].text
+        # single_info['close'] = d[4].text
+        # single_info['vol'] = d[5].text
+        # single_info['adj_close'] = d[6].text
         insert_one_data(code, d)
 
         # TODO: calc the bollinger bands
@@ -163,7 +168,4 @@ if __name__ == "__main__":
     print "Start:", start
     init_get()
     print "Start %s End: %s" %(start.strftime("%Y-%m-%d %H:%M:%S:%Z"), datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%Z"))
-
-
-            
-    
+          
