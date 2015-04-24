@@ -1,0 +1,1 @@
+This is used for get China class A stock info from yahoo stock.
