@@ -1,5 +1,10 @@
 
+<<<<<<< HEAD
 code_list_hard = [
+=======
+code_list_hard = []
+
+>>>>>>> 09274d8f92c4386153c576a6f7fd30dd506c668d
                     "300062.SZ",
                     "300072.SZ",
                     "000563.SZ",
