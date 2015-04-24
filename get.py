@@ -140,12 +140,12 @@ def get_stock_list_info(code_list):
             print "get the Stock: %s Finished", code , " Time ", datetime.datetime.now()
 
 def init_get():
-    with open ("stock.csv", "w") as csvfile:
+    with open ("stock.csv", "w+") as csvfile:
         fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
         writer = csv.DictWriter(csvfile, fieldnames)
         writer.writeheader()
 
-    code_list = get_code.get_code_list()
+    code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
     db = db.close()
 
