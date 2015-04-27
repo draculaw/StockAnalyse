@@ -145,11 +145,6 @@ def get_stock_list_info(code_list):
             print "get the Stock: %s Finished", code , " Time ", datetime.datetime.now()
 
 def init_get():
-    with open ("stock.csv", "w+") as csvfile:
-        fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
-        writer = csv.DictWriter(csvfile, fieldnames)
-        writer.writeheader()
-
     code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
     db = db.close()
@@ -162,10 +157,9 @@ def init_db():
     db.commit()
     c.close()
 
-if __name__ == "__main__":
-    init_db()
-    start = datetime.datetime.now()
-    print "Start:", start
-    init_get()
-    print "Start %s End: %s" %(start.strftime("%Y-%m-%d %H:%M:%S:%Z"), datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%Z"))
-          
+    with open ("stock.csv", "w") as csvfile:
+        fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
+        writer = csv.DictWriter(csvfile, fieldnames)
+        writer.writeheader()
+
+
