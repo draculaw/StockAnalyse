@@ -18,6 +18,7 @@ import lxml.html
 import StringIO
 import datetime
 import sqlite3
+import requests
 
 import csv
 
@@ -96,9 +97,11 @@ def insert_one_data(code, data):
 def get_stock_info(url, code, arg = ""):
     print "download: " + url + arg 
     print "Start Time ", datetime.datetime.now()
-    res = urllib2.urlopen(url + arg)
+    #res = urllib2.urlopen(url + arg)
+    res = requests.get(url + arg)
     print "Over Time ", datetime.datetime.now()
-    context = res.read()
+    #context = res.read()
+    context = res.content
     #lines = context.split("\n")
 
     doc = lxml.html.parse(StringIO.StringIO(context))
