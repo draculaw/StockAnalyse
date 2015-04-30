@@ -21,7 +21,7 @@ def get_code_list_from_file():
         sz_code_list = [code+".SZ" for code in raw_code_list]
     
 
-    code_list = code_list_hard + sz_code_list + ss_code_list
+    code_list = sz_code_list + ss_code_list
     return code_list
 
 
@@ -30,5 +30,6 @@ def get_code_list_from_hard_code():
     return code_list_hard
 
 def get_code_list():
-    return get_code_list_from_file()
-  
+    return get_code_list_from_hard_code() + get_code_list_from_file()
+ 
+    

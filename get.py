@@ -101,6 +101,7 @@ def get_stock_info(url, code, arg = ""):
     res = requests.get(url + arg)
     print "Over Time ", datetime.datetime.now()
     #context = res.read()
+    res.encoding  = res.apparent_encoding 
     context = res.content
     #lines = context.split("\n")
 
@@ -142,6 +143,7 @@ def get_stock_list_info(code_list):
             get_stock_info(url=url, code=code, arg='/q/hp?s='+ code)
             
             print "End Time ", datetime.datetime.now()
+            
         except Exception as e :
             print "error %s on get: %s ", (e,code) 
         finally:
@@ -151,6 +153,12 @@ def init_get():
     code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
     db = db.close()
+
+def update_get():
+    code_list = set(get_code.get_code_list())
+    get_stock_list_info(code_list)
+    db = db.close()
+
 
 def init_db():
     cmd = "delete from stock where 1=1"
@@ -166,3 +174,10 @@ def init_db():
         writer.writeheader()
 
 
+
+if __name__ == "__main__":
+    print "please use the single cmd line"
+    print "init_get.py for get all code from the file hehe_sz, hehe_ss and code_list_hard in get_code.py"
+    print "update.py  for fetch new data from the database"
+    print "fetch_one.py is for fetch an new code has not insert into db"
+    
