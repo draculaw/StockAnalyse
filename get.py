@@ -152,12 +152,16 @@ def get_stock_list_info(code_list):
 def init_get():
     code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
-    db = db.close()
+    db.close()
+
+def update_list(list):
+    get_stock_list_info(list)
+    db.close()
 
 def update_get():
     code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
-    db = db.close()
+    db.close()
 
 
 def init_db():
