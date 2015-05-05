@@ -56,6 +56,7 @@ data_list = []
 def insert_one_data(code, data):
 
     data[0].text = datetime.datetime.strptime(data[0].text, "%b %d, %Y").strftime("%Y%m%d")
+    data[5].text.replace(',', '').replace('"', '')
 
     c = db.cursor()
     tmp_cmd =    "\", \" ".join(
@@ -83,7 +84,7 @@ def insert_one_data(code, data):
 
     with open ("stock.csv", "a") as csvfile:
         fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
-        writer = csv.DictWriter(csvfile, fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
         data = { "code":code, 
                  "date":data[0].text,
                  "open":data[1].text,
@@ -137,30 +138,31 @@ def get_stock_list_info(code_list):
     url = "http://finance.yahoo.com"     #  600563.SS"
     for code in code_list:
         #stock_info[code] = []
-        try:
-            print "get the Stock: ", code 
-            print "Begin Time ", datetime.datetime.now()
-            get_stock_info(url=url, code=code, arg='/q/hp?s='+ code)
-            
-            print "End Time ", datetime.datetime.now()
-            
-        except Exception as e :
-            print "error %s on get: %s ", (e,code) 
-        finally:
-            print "get the Stock: %s Finished", code , " Time ", datetime.datetime.now()
+        # try:
+        print "get the Stock: ", code 
+        print "Begin Time ", datetime.datetime.now()
+        get_stock_info(url=url, code=code, arg='/q/hp?s='+ code)
+        
+        print "End Time ", datetime.datetime.now()
+        
+        # except Exception as e :
+        #     print "error %s on get: %s ", (e,code) 
+        #     raise e
+        # finally:
+        #     print "get the Stock: %s Finished", code , " Time ", datetime.datetime.now()
 
 def init_get():
     code_list = set(get_code.get_code_list())
     get_stock_list_info(code_list)
     db.close()
 
-def update_list(list):
-    get_stock_list_info(list)
+def update_list(ll):
+    get_stock_list_info(list(ll))
     db.close()
 
 def update_get():
     code_list = set(get_code.get_code_list())
-    get_stock_list_info(code_list)
+    get_stock_list_info(list(code_list))
     db.close()
 
 
@@ -174,7 +176,7 @@ def init_db():
 
     with open ("stock.csv", "w") as csvfile:
         fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
-        writer = csv.DictWriter(csvfile, fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
         writer.writeheader()
 
 
