@@ -1,10 +1,12 @@
-import pandas
-import matplotlib.pyplot
-import numpy
+
+
 import csv
-import sqlite3
 import get
+
+import pandas
 from datetime import datetime
+
+
 
 def init_data_from_db():
 
@@ -36,17 +38,25 @@ def init_data_from_db():
                 }
             writer.writerow(d)
 
+all_data=None
+
 def get_data_from_csv():
-    with open ("stock1.csv", "r") as csvfile:
-        data = csvfile.readlines()
+
+    global all_data
+
+    if all_data is None:
+        with open ("stock1.csv", "r") as csvfile:
+            data = csvfile.readlines()
     # data = data[1:]
     
-    data = [d.split(';') for d in data ]
+        data = [d.split(';') for d in data ]
   
-    dataframe = pandas.DataFrame(data)
-    series = pandas.Series(data)
+    #dataframe = pandas.DataFrame(data)
 
-    return dataframe, series[1:]
+        all_data = pandas.Series(data)[1:]
+
+
+    return all_data
 
 class stock_data():
     def __init__(self, data=[]):
@@ -64,13 +74,15 @@ class stock_data():
     def __str__(self):
         return '; '.join([str(self.date), self.code, str(self.open), str(self.high),str(self.low), str(self.close), str(self.volume)])
 
-def get_stock_from_csv(code, all_data=None):
+
+def get_stock_from_csv(code):
     if not isinstance(code, str):
         raise "Code should be str"
+    
 
-    if all_data == None:
-        dataframe, series = get_data_from_csv()
-        all_data = series
+
+    series = get_data_from_csv()
+    all_data = series
         
     data = [ stock_data(d) for d in all_data if d[6] != '0' and d[0] == code ]
     
