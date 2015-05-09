@@ -19,7 +19,7 @@ def init_data_from_db():
 
     l2 = [list(d) for d in l1]
     
-    with open ("stock1.csv", "w") as csvfile:
+    with open ("stock.csv", "w") as csvfile:
         fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
         writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
         writer.writeheader()
@@ -70,6 +70,9 @@ class stock_data():
         self.close = float(data[5])
         self.volume = int(data[6].replace(',', ''))
         self.date = datetime.strptime(data[1], " %Y%m%d")
+        self.ma = 0.0
+        self.up = 0.0
+        self.dn = 0.0
 
     def __str__(self):
         return '; '.join([str(self.date), self.code, str(self.open), str(self.high),str(self.low), str(self.close), str(self.volume)])
@@ -87,3 +90,6 @@ def get_stock_from_csv(code):
     data = [ stock_data(d) for d in all_data if d[6] != '0' and d[0] == code ]
     
     return data
+
+if __name__  == "__main__":
+    init_data_from_db()
