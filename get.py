@@ -23,6 +23,7 @@ import requests
 import csv
 
 import get_code
+import os
 
 #stock_info = {}
 
@@ -82,7 +83,16 @@ def insert_one_data(code, data):
     db.commit()
     c.close()
 
-    with open ("stock.csv", "a") as csvfile:
+    filename = "csv/" + code + ".csv"
+
+    if not os.path.exists(filename):           
+
+        with open ("stock.csv", "w+") as csvfile:
+            fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
+            writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
+            writer.writeheader()     
+                   
+    with open ("csv/" + code + ".csv", "a") as csvfile:
         fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
         writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
         data = { "code":code, 
@@ -174,10 +184,12 @@ def init_db():
     db.commit()
     c.close()
 
-    with open ("stock.csv", "w") as csvfile:
-        fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
-        writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
-        writer.writeheader()
+    os.system("mkdir csv")
+
+    # with open ("stock.csv", "w") as csvfile:
+    #     fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
+    #     writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
+    #     writer.writeheader()
 
 
 

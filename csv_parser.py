@@ -5,7 +5,7 @@ import get
 
 import pandas
 from datetime import datetime
-
+import os
 
 
 def init_data_from_db():
@@ -19,12 +19,21 @@ def init_data_from_db():
 
     l2 = [list(d) for d in l1]
     
-    with open ("stock.csv", "w") as csvfile:
-        fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
-        writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
-        writer.writeheader()
+    for data in l2:
+        filename = "csv/" + data[0] + ".csv"
 
-        for data in l2:
+        if not os.path.exists(filename):           
+
+            with open ("stock.csv", "w") as csvfile:
+                fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
+                writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
+                writer.writeheader()            
+        
+        with open (filename, "a") as csvfile:
+            fieldnames = ['code', 'date', 'open', 'high', 'low', 'close', 'volume', 'adj_close' ]
+            writer = csv.DictWriter(csvfile, fieldnames, delimiter=";")
+            writer.writeheader()
+
             #data[6].replace(',', '')
             d = {
                     "code":data[0], 
